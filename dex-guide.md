@@ -80,8 +80,10 @@ We want to add two new global variables so the whole contract has access to thes
 The variables will be for `totalLiquidity` and `liquidity`, add them to `DEX.sol`:
 
 <details markdown='1'><summary>👩🏽‍🏫 Socratic Guide</summary>
+
 1. What type should `totalLiquidity` be? We will update its value later so no need to assign it a value.
 2. We want the contract to keep track of different people's (addresses) `liquidity` (numerical value), what data structure should we use? Perhaps a key value store?
+
 </details>
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
@@ -94,11 +96,15 @@ mapping (address => uint256) public liquidity;
 </details>
 
 These variables track the total liquidity, but also by individual addresses too.
-Now, let's create an `init()` function in `DEX.sol` that is payable and then we can define an amount of tokens that it will transfer to itself.
+Now, let's create an `init()` function in `DEX.sol` that is payable. The `00_deploy_your_contract.ts` file will call this function once and send the contract eth. What do we do with the eth once we have it? 
+First let's require that the contract doesn't already have liquidity.
+Then let's assign values to our two global variables.
 
 
-<details markdown='1'><summary> 👨🏻‍🏫 Solution Code</summary>
-********************************************
+<details markdown='1'><summary> 👨🏻‍🏫 Socratic Guide</summary>
+1. Let's first require the contract has no totalLiquidity.
+2. When our contract has eth, how would we assign the contract's balance to `totalLiquidity`?
+3. Who provided that total liquidity, the `00_deploy_your_contract.ts` did but who ran that script? Should they have that
 </details>
 
 <details markdown='1'><summary> 👨🏻‍🏫 Solution Code</summary>
