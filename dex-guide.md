@@ -174,3 +174,79 @@ Now when we `yarn deploy --reset` then our contract should be initialized as soo
 - [ ] ⚠ If you are planning to submit the challenge make sure to implement the `getLiquidity` getter function in `DEX.sol`
 
 ---
+
+## ⛳️ **Checkpoint 3: Price** 🤑
+
+This section is directly from the [original tutorial](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90) "Price" section. It outlines the general details of the DEX's pricing model.
+
+If you need some more clarity on how the price in a pool is calculated, [this video](https://youtu.be/IL7cRj5vzEU) by Smart Contract Programmer has a more in-depth explanation.
+
+Now that our contract holds reserves of both ETH and tokens, we want to use a simple formula to determine the exchange rate between the two.
+Let’s start with the formula `x * y = k` where `x` and `y` are the reserves:
+
+```
+(amount of ETH in DEX ) * ( amount of tokens in DEX ) = k
+```
+
+The `k` is called an invariant because it doesn’t change during trades. (The `k` only changes as liquidity is added.) If we plot this formula, we’ll get a curve that looks something like:
+
+![image](https://user-images.githubusercontent.com/12072395/205343533-7e3a2cfe-8329-42af-a35d-6352a12bf61e.png)
+
+> 💡 We are just swapping one asset for another, the “price” is basically how much of the resulting output asset you will get if you put in a certain amount of the input asset.
+
+🤔 OH! A market based on a curve like this will always have liquidity, but as the ratio becomes more and more unbalanced, you will get less and less of the less-liquid asset from the same trade amount. Again, if the smart contract has too much ETH and not enough $BAL tokens, the price to swap $BAL tokens to ETH should be more desirable.
+
+When we call `init()` we passed in ETH and $BAL tokens at a ratio of 1:1. As the reserves of one asset changes, the other asset must also change inversely in order to maintain the constant product formula (invariant `k`).
+
+Now, try to edit your `DEX.sol` smart contract and bring in a price function!
+
+<details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
+
+```
+
+    function price(
+        uint256 xInput,
+        uint256 xReserves,
+        uint256 yReserves
+    ) public pure returns (uint256 yOutput) {
+        uint256 xInputWithFee = xInput * 997;
+        uint256 numerator = xInputWithFee * yReserves;
+        uint256 denominator = (xReserves * 1000) + xInputWithFee;
+        return (numerator / denominator);
+    }
+
+```
+
+</details>
+
+We use the ratio of the input vs output reserve to calculate the price to swap either asset for the other. Let’s deploy this and poke around:
+
+```
+yarn run deploy
+```
+
+Let’s say we have 1 million ETH and 1 million tokens, if we put this into our price formula and ask it the price of 1000 ETH it will be an almost 1:1 ratio:
+
+![price-example-1](https://github.com/scaffold-eth/se-2-challenges/assets/55535804/e2d725cc-91f3-454d-902f-b39e4b51f5e2)
+
+If we put in 1000 ETH we will receive 996 tokens. If we’re paying a 0.3% fee it should be 997 if everything was perfect. BUT, there is a tiny bit of slippage as our contract moves away from the original ratio. Let’s dig in more to really understand what is going on here.
+Let’s say there is 5 million ETH and only 1 million tokens. Then, we want to put 1000 tokens in. That means we should receive about 5000 ETH:
+
+![price-example-2](https://github.com/scaffold-eth/se-2-challenges/assets/55535804/349db3d8-e39e-4c94-8026-e01da2cefb8e)
+
+Finally, let’s say the ratio is the same but we want to swap 100,000 tokens instead of just 1000. We’ll notice that the amount of slippage is much bigger. Instead of 498,000 back we will only get 453,305 because we are making such a big dent in the reserves.
+
+![price-example-3](https://github.com/scaffold-eth/se-2-challenges/assets/55535804/f479d7cd-0e04-4aa7-aa52-cef30d747af3)
+
+❗️ The contract automatically adjusts the price as the ratio of reserves shifts away from the equilibrium. It’s called an 🤖 _Automated Market Maker (AMM)._
+
+### 🥅 Goals / Checks
+
+- [ ] 🤔 Do you understand how the x\*y=k price curve actually works? Write down a clear explanation for yourself and derive the formula for price. You might have to shake off some old algebra skills!
+- [ ] 💃 You should be able to go through the price section of this tutorial with the sample numbers and generate the same outputChange variable.
+
+> 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
+
+> 💡💡 _More Hints:_ Also, don't forget to think about how to implement the trading fee. Solidity doesn't allow for decimals, so one way that contracts are written to implement percentage is using whole uints (997 and 1000) as numerator and denominator factors, respectively.
+
+---
