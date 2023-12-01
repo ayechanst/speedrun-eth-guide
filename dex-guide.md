@@ -200,6 +200,13 @@ When we call `init()` we passed in ETH and $BAL tokens at a ratio of 1:1. As the
 
 Now, try to edit your `DEX.sol` smart contract and bring in a price function!
 
+The price function should take in the reserves of `xReserves`, `yReserves`, and some input (`xInput`) to calculate what the exchange rate of $BAL to ETH or vice versa.
+Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats (decimals) in Solidity, only whole numbers!
+
+<details markdown='1'><summary>👩🏽‍🏫 Socratic Guide</summary>
+1. 
+</details>
+
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
 ```
