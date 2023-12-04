@@ -199,17 +199,23 @@ The `k` is called an invariant because it doesn’t change during trades. (The `
 
 > 💡 We are just swapping one asset for another, the “price” is basically how much of the resulting output asset you will get if you put in a certain amount of the input asset.
 
+
 🤔 OH! A market based on a curve like this will always have liquidity, but as the ratio becomes more and more unbalanced, you will get less and less of the less-liquid asset from the same trade amount. Again, if the smart contract has too much ETH and not enough $BAL tokens, the price to swap $BAL tokens to ETH should be more desirable.
 
 When we call `init()` we passed in ETH and $BAL tokens at a ratio of 1:1. As the reserves of one asset changes, the other asset must also change inversely in order to maintain the constant product formula (invariant `k`).
 
 Now, try to edit your `DEX.sol` smart contract and bring in a price function!
 
-The price function should take in the reserves of `xReserves`, `yReserves`, and some input (`xInput`) to calculate what the exchange rate of $BAL to ETH or vice versa.
-Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats (decimals) in Solidity, only whole numbers!
+The price function should take in the reserves of `xReserves`, `yReserves`, and `xInput` to calculate the `yOutput`.
+Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats or decimals in Solidity, only whole numbers!
 
-<details markdown='1'><summary>👩🏽‍🏫 Socratic Guide</summary>
-1. The tokens, `xInput` that the user is going to exchange needs a fee applied to it. How can we represent 0.3% as a whole number? We could make a new variable called `xInputWithFee`, 
+What does all this mean in terms of math? We need to use `x * y = k` and solve for `y`. `x` is our input, and `k` is the constant supply of either $BAL tokens or ETH.
+How do we implement trading fees in all this without using decimals? We can represent decimals as fractions. For example 9/10 is 0.9, or 90% of something, and 0.3% is 0.003, or 3/1000. 
+We should apply the fee to `xInput`, because we want the DEX user to pay the fee. If we apply the fee at the end of the calculation then our `yOutput` and our invariant `k` also end up paying fees.
+
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+1. To apply a, `xInput` that the user is going to exchange needs a fee applied to it. How can we represent 0.3% as a whole number? We could make a new variable called `xInputWithFee`.
+1. To get `xInputWithFee`, we need to multiply `xInput` by a number tha
 </details>
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
