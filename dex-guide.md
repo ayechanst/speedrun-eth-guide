@@ -216,6 +216,7 @@ We should apply the fee to `xInput`, and store it in a new variable `xInputWithF
 One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
+
 The math we are doing looks something like this:
 ```
 x * y = k // we want to solve for y
