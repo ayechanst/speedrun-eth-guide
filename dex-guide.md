@@ -211,13 +211,15 @@ Don't forget about trading fees! These fees are important to reward and incentiv
 
 What does all this mean in terms of math? We need to use `x * y = k` and solve for `y`. `x` is our input, and `k` is the constant supply of either $BAL tokens or ETH.
 How do we implement trading fees in all this without using decimals? We can represent decimals as fractions. For example 9/10 is 0.9, or 90% of something, and 0.3% is 0.003, or 3/1000. 
-We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply 😨 
+We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply `k` 😨 
+
+One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. To get `xInputWithFee`, we would normally multiply `xInput` by 0.997 but we can't use decimals. Play around with moving the decimal so we are multiplying `xInput` by a whole number.
-2. Solving for `y` will cause us to divide by `x` on both sides of the equation, so lets declare a `numerator` variable and a `denominator` variable.
-3. 
+2. Solving for `y` will cause us to divide by `x` on both sides of the equation, so let's declare a `numerator` variable which represents `k` and a `denominator` variable representing `x`.
+3. The `numerator` representing `k` 
 
 </details>
 
