@@ -77,14 +77,17 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets.
 
 We want to add two new global variables so the whole contract has access to these values.
-The variables will be for `totalLiquidity` and `liquidity`, add them to `DEX.sol`:
+Check the Guiding Questions for some insight on how the code should look.
+The variables added will be for `totalLiquidity` and `liquidity`, add them to `DEX.sol`:
 
-<details markdown='1'><summary>👩🏽‍🏫 Socratic Guide</summary>
+<details markdown='1'><summary>‍🦉 Guiding Questions</summary>
 
-1. What type should `totalLiquidity` be? We will update its value later so no need to assign it a value.
-2. We want the contract to keep track of different people's (addresses) `liquidity` (numerical value), what data structure should we use? Perhaps a key value store?
+1. What type should `totalLiquidity` be? We will update it later so no need to assign it a value just now.
+2. We want the contract to keep track of different people's (addresses) `liquidity` (numerical value), what data structure should we use?
 
 </details>
+
+Check the Solution Code for the final answer!
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
@@ -204,7 +207,7 @@ The price function should take in the reserves of `xReserves`, `yReserves`, and 
 Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats (decimals) in Solidity, only whole numbers!
 
 <details markdown='1'><summary>👩🏽‍🏫 Socratic Guide</summary>
-1. 
+1. The tokens, `xInput` that the user is going to exchange needs a fee applied to it. How can we represent 0.3% as a whole number? We could make a new variable called `xInputWithFee`, 
 </details>
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
