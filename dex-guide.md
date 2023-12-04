@@ -214,9 +214,11 @@ How do we implement trading fees in all this without using decimals? We can repr
 We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply 😨 
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
+
 1. To get `xInputWithFee`, we would normally multiply `xInput` by 0.997 but we can't use decimals. Play around with moving the decimal so we are multiplying `xInput` by a whole number.
 2. Solving for `y` will cause us to divide by `x` on both sides of the equation, so lets declare a `numerator` variable and a `denominator` variable.
 3. 
+
 </details>
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
