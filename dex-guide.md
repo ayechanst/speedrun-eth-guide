@@ -216,6 +216,15 @@ We should apply the fee to `xInput`, and store it in a new variable `xInputWithF
 One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
+The math we are doing looks something like this:
+```
+x * y = k // we want to solve for y
+
+Divide both sides by x to cancel out the x on the left side of the equal sign
+
+y = k / x
+
+```
 
 1. To get `xInputWithFee`, we would normally multiply `xInput` by 0.997 but we can't use decimals. Play around with moving the decimal so we are multiplying `xInput` by a whole number.
 2. Solving for `y` will cause us to divide by `x` on both sides of the equation, so let's declare a `numerator` variable which represents `k` and a `denominator` variable representing `x`.
