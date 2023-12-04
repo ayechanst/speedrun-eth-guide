@@ -101,11 +101,11 @@ mapping (address => uint256) public liquidity;
 These variables track the total liquidity, but also by individual addresses too.
 Now, let's create an `init()` function in `DEX.sol` that is payable and assign the value sent to our contract to our global variables we just defined.
 
-<details markdown='1'><summary> 👨🏻‍🏫 Socratic Guide</summary>
-1. Let's first require the contract has no totalLiquidity.
-2. When our contract has tokens, how would we assign the contract's balance to `totalLiquidity`?
-3. We are the ones who sent the liquidity, how would we assign ourselves (as individuals) the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half? 
-4. Now that we set up where our tokens are going once they are sent, what is the last step to make sure our contract has tokens? Should this last step be 'require'd, or would it be no big deal if our DEX had 0 tokens 😧?
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+1. Let's first require the contract has no totalLiquidity.  
+2. When our contract has tokens, how would we assign the contract's balance to `totalLiquidity`?  
+3. We are the ones who sent the liquidity, how would we assign ourselves (as individuals) the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?  
+4. Now that we set up where our tokens are going once they are sent, what is the last step to make sure our contract has tokens? Should this last step be 'require'd, or would it be no big deal if our DEX had 0 tokens 😧?  
 </details>
 
 <details markdown='1'><summary> 👨🏻‍🏫 Solution Code</summary>
