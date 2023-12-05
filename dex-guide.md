@@ -227,9 +227,10 @@ y = k / x
 
 ```
 
-1. To get `xInputWithFee`, we would normally multiply `xInput` by 0.997 but we can't use decimals. Play around with moving the decimal so we are multiplying `xInput` by a whole number.
-2. Solving for `y` will cause us to divide by `x` on both sides of the equation, so let's declare a `numerator` variable which represents `k` and a `denominator` variable representing `x`.
-3. The `numerator` representing `k` 
+To make things easier, let's think of percentages and decimals as fractions. For example, if a shirt at a store is 30% off, we multiply the shirt's price by 0.70 so apply the discount.
+
+1. To get `xInputWithFee`, let's think about how we normally calculate items that are on sale. If something is 30% off, we multiply the item's price by 0.70 to get the remaining cost. `xInputWithFee` is similar to a discounted item in that it is a fraction of the original value. What can we multiply `xInput` by so its 0.3% off? 0.997 would work but we can't use decimals, so let's use a whole number instead and later we'll divide by the appropriate number to accurately represent a 0.3% fee (which is the same as 99.7% of the original value).
+2. Now let's make a variable `numerator` that represent `k`. 
 
 </details>
 
