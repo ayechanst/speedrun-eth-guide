@@ -296,7 +296,9 @@ We will also have two important require statements, and an event emission.
 1. Write a require statement to ensure `msg.value` is greater than 0
 2. To use our `price()` function we need to define the two out of three variable arguments that `price()` takes in: `xReserves` and `yReserves`. Let's be more descriptive however and switch `xReserves` to the name of `ethReserve`. When the user executes `ethToToken()` they are sending an ETH amount to the contract to swap for $BAL tokens. But we want the `ethReserve` to represent the balance of this contract BEFORE any ETH was sent, how would we do that?
 3. Next for `yReserves` we will also want to create a new more descriptive variable name say `token_reserve`. How do we find the balance of tokens this address has? The answer is in the questions with a few parentheses and dot operator. 
-4. Next we let's use our `price()` function and assign the `yOutput` to variable called `tokenOutput`. What is the first argument to our `price()` function? The two others we just defined above.
+4. Next we let's use our `price()` function and assign the `yOutput` of the function to a variable called `tokenOutput`. What is the first argument to our `price()` function? The two others we just defined above. 
+5. Now that we have the appropriate `tokenOutput` for the value the sender sent through, let's transfer `tokenOutput` to the sender. Let's also make sure this step is required so the function reverts everything if something went wrong.
+6. Last we will emit the `EthToTokenSwap` event to record this transaction.
 
 </details>
 
@@ -321,6 +323,8 @@ We will also have two important require statements, and an event emission.
 ```
 
 </details>
+
+
 
 <details markdown='1'><summary>👨🏻‍🏫 tokenToEth() Solution Code </summary>
 
