@@ -286,9 +286,16 @@ Finally, let’s say the ratio is the same but we want to swap 100,000 tokens in
 ---
 ## Checkpoint 4: Trading 🤝
 
-Let’s edit the `DEX.sol` smart contract and add two new functions for swapping from each asset to the other, `ethToToken()` and `tokenToEth()`!
+Let’s edit the `DEX.sol` smart contract and add two new functions for swapping from each asset to the other, `ethToToken()` and `tokenToEth()`. 
 
-<details markdown='1'><summary>👨🏻‍🏫 Solution Code </summary>
+
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+1. 
+
+</details>
+
+<details markdown='1'><summary>👨🏻‍🏫 ethToToken() Solution Code </summary>
 
 ```
     /**
@@ -304,7 +311,14 @@ Let’s edit the `DEX.sol` smart contract and add two new functions for swapping
         emit EthToTokenSwap(msg.sender, tokenOutput, msg.value);
         return tokenOutput;
     }
+    
+```
 
+</details>
+
+<details markdown='1'><summary>👨🏻‍🏫 tokenToEth() Solution Code </summary>
+
+```
     /**
      * @notice sends $BAL tokens to DEX in exchange for Ether
      */
