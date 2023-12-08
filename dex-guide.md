@@ -288,6 +288,7 @@ Finally, let’s say the ratio is the same but we want to swap 100,000 tokens in
 
 Let’s edit the `DEX.sol` smart contract and add two new functions for swapping from each asset to the other, `ethToToken()` and `tokenToEth()`. 
 
+The basic overview for `ethToToken()` is we're going to use the `price()` function we just made to calculate what the user's `tokenOutput` is going to be for however much ETH they send through.
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
