@@ -107,7 +107,9 @@ Now, let's create an `init()` function in `DEX.sol` that is payable and assigns 
 
 <details markdown='1'><summary>🦉 Solution Explantion</summary>
 
-1.
+First we just want to make sure that the DEX starts without any liquidity. This `init()` function can be sent ETH since it's `payable`, or $BAL tokens since our parameter is any amount of `tokens`. If we did send ETH, we want to update the global variable `totalLiquidity` to the balance of this address so we can easily use the value later. We also want to update our `liquidity` mapping (in case we sent ETH) to represent us, the msg.sender, as having a balance of ETH equal to the `totalLiquidity`. This is because we provided all the liquidity so far. If we also want to send tokens, we need to transfer the tokens from the function argument to the address of the contract. The `token` variable 
+3. Us, the `msg.sender` are sending liquidity to the contract when we call `init()`. Since we provided all of the liquidity so far, we want to assign ourselves the `totalLiquidity` in our `liquidity` mapping.
+4. Next we need to 
 
 </details>
 
