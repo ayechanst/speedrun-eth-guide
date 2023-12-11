@@ -86,14 +86,15 @@ mapping (address => uint256) public liquidity;
 </details>
 
 These variables track the total liquidity, but also by individual addresses too.
-Now, let's create an `init()` function in `DEX.sol` that is payable and assigns the value sent to our contract to our global variables we just defined.
+Now, let's create an `init()` function in `DEX.sol`. 
+We want this function written in a way that when we send ETH and/or $BAL tokens through our front end or deployer script, the function will get those values from the contract and assign them onto the global variables we just defined. 
 
 <details markdown='1'><summary>🦉 Guiding Questions Version 1</summary>
 
 1. Do we want to provide liquidity if the contract already has liquidity? How can we help/prevent this from happening?
-2. How are we going to assign the liquidity in the contract/balance to `totalLiquidity`?
+2. How are we going to assign the liquidity/balance in the contract to `totalLiquidity` so we can do things with the value?
 3. We are the ones who sent the liquidity, how would we assign ourselves (as an individual) the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?
-4. Now that we set up where our tokens are going once they are sent, what is the last step to make sure our contract has tokens? Should this last step be required, or would it be no big deal if our DEX had 0 tokens 😧?
+4. If we want to send tokens, how do we transfer those `tokens` from our parameter to the contract? How do we make sure the transaction fails if our wallet has less tokens than the amount we want to send?
 
 </details>
 
@@ -109,9 +110,8 @@ Now, let's create an `init()` function in `DEX.sol` that is payable and assigns 
 
 First we just want to make sure that the DEX starts without any liquidity. This `init()` function can be sent ETH since it's `payable`, or $BAL tokens since our parameter is any amount of `tokens`. If we did send ETH, we want to update the global variable `totalLiquidity` to the balance of this address so we can easily use the value later.
 We also want to update our `liquidity` mapping (in case we sent ETH) to represent us, the msg.sender, as having a balance of ETH equal to the `totalLiquidity`. This is because we provided all the liquidity so far. If we also want to send tokens, we need to transfer the tokens from the function argument to the address of the contract. 
-The `token` variable set in the constructor has an address assigned to it already, and it has inherited the methods associated with the Open Zepplin IERC20 token contract. This means we can use methods on it one of those being the `transferFrom()` function. Using the dot operator on `token`, we can transfer tokens from a `msg.sender` which is us, to an `address(this)` meaning this contract, a certain amount of tokens. In this case all the tokens specified in the function arguments. 
-3. Us, the `msg.sender` are sending liquidity to the contract when we call `init()`. Since we provided all of the liquidity so far, we want to assign ourselves the `totalLiquidity` in our `liquidity` mapping.
-4. Next we need to 
+The `token` variable set in the constructor has an address assigned to it already, and it has inherited the methods associated with the Open Zepplin IERC20 token contract. This means we can use methods on it one of those being the `transferFrom()` function. Using the dot operator on `token`, we can transfer tokens from a `msg.sender` which is us, to an `address(this)` meaning this contract, a certain amount of tokens. In this case all the tokens specified in the function arguments. We wrap this line in a require statement so that if you, the liquidity provider, does not have enough tokens, the whole function reverts and everyone stays safe.
+We return `totalLiquidity` at the end in case we want to verify liquidity was sent and the function ran properly. 
 
 </details>
 
