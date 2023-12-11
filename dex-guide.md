@@ -76,19 +76,6 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 
 We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets.
 
-We want to add two new global variables so the whole contract has access to these values.
-Check the Guiding Questions for some insight on how the code should look.
-The variables added will be for `totalLiquidity` and `liquidity`, add them to `DEX.sol`:
-
-<details markdown='1'><summary>‍🦉 Guiding Questions</summary>
-
-1. What type should `totalLiquidity` be? We will update it later so no need to assign it a value just now.
-2. We want the contract to keep track of different people's (addresses) `liquidity` (numerical value), what data structure should we use?
-
-</details>
-
-Check the Solution Code for the final answer!
-
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
 ```
@@ -101,12 +88,26 @@ mapping (address => uint256) public liquidity;
 These variables track the total liquidity, but also by individual addresses too.
 Now, let's create an `init()` function in `DEX.sol` that is payable and assigns the value sent to our contract to our global variables we just defined.
 
-<details markdown='1'><summary>🦉 Guiding Questions</summary>
+<details markdown='1'><summary>🦉 Guiding Questions Version 1</summary>
 
 1. Do we want to provide liquidity if the contract already has liquidity? How can we help/prevent this from happening?
-2. When we eventually call `init()`, how do we assign the liquidity we just provided to `totalLiquidity`?
+2. How are we going to assign the liquidity in the contract/balance to `totalLiquidity`?
 3. We are the ones who sent the liquidity, how would we assign ourselves (as an individual) the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?
 4. Now that we set up where our tokens are going once they are sent, what is the last step to make sure our contract has tokens? Should this last step be required, or would it be no big deal if our DEX had 0 tokens 😧?
+
+</details>
+
+<details markdown='1'><summary>🦉 Steps Version 2</summary>
+
+1. Assign the balance of the contract to `totalLiquidity`. 
+2. Give yourself the `totalLiquidity` you just provided.
+3. Transfer the tokens from yourself to the contract
+
+</details>
+
+<details markdown='1'><summary>🦉 Solution Explantion</summary>
+
+1.
 
 </details>
 
