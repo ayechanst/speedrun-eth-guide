@@ -298,9 +298,7 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 5. After getting how many tokens the sender should receive, how do we transfer those tokens to the sender?
 6. Last we will emit the `EthToTokenSwap` event to record this transaction.
 
-</details>
-
-<details markdown='1'><summary>👨🏻‍🏫 ethToToken() Solution Code </summary>
+<details markdown='1'><summary>👨🏻‍🏫 Solution Code </summary>
 
 ```
     /**
@@ -321,6 +319,9 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 
 </details>
 
+</details>
+
+
 😎 Great now onto the next! `tokenToEth()` is going to do the opposite so it should be pretty straight forward. But if you get stuck the guiding questions are always there 🦉 
 
 
@@ -333,9 +334,7 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 5. After getting how many ETH the sender should receive, how do we transfer the ETH to the sender? 
 6. Last we will emit the `tokenToEthSwap` event to record this transaction.
 
-</details>
-
-<details markdown='1'><summary>👨🏻‍🏫 tokenToEth() Solution Code </summary>
+<details markdown='1'><summary>👨🏻‍🏫 Solution Code </summary>
 
 ```
     /**
@@ -360,6 +359,9 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 
 </details>
 
+</details>
+
+
 > 💡 Each of these functions should calculate the resulting amount of output asset using our price function that looks at the ratio of the reserves vs the input asset. We can call tokenToEth and it will take our tokens and send us ETH or we can call ethToToken with some ETH in the transaction and it will send us $BAL tokens. Deploy it and try it out!
 
 ### 🥅 Goals / Checks
@@ -378,11 +380,21 @@ So far, only the `init()` function controls liquidity. To make this more decentr
 Let’s create two new functions that let us deposit and withdraw liquidity. How would you write this function out? Try before taking a peak!
 
 > 💬 _Hint:_
+
 > The `deposit()` function receives ETH and also transfers $BAL tokens from the caller to the contract at the right ratio. The contract also tracks the amount of liquidity (how many liquidity provider tokens (LPTs) minted) the depositing address owns vs the totalLiquidity.
 
-> 💡 **Remember**: Every time you perform actions with your $BAL tokens (deposit, exchange), you'll need to call `approve()` from the `Balloons.sol` contract **to authorize the DEX address to handle a specific number of your $BAL tokens**. To keep things simple, you can just do that from `Debug Contracts` tab, **ensure you approve a large enough quantity of tokens to not face allowance problems**.
+What does this hint mean in practice? The goal is to allow a user to `deposit()` ETH into our `totalLiquidity`, and update their `liquidity`. This is very similar to the `init()` function, except we want this to work for everyone. Also since there already is liquidity we want the liquidity they provide leave the invariant `k` unchanged. 
 
-> 💬💬 _More Hints:_ The `withdraw()` function lets a user take his Liquidity Provider Tokens out, withdrawing both ETH and $BAL tokens out at the correct ratio. The actual amount of ETH and tokens a liquidity provider withdraws could be higher than what they deposited because of the 0.3% fees collected from each trade. It also could be lower depending on the price fluctuations of $BAL to ETH and vice versa (from token swaps taking place using your AMM!). The 0.3% fee incentivizes third parties to provide liquidity, but they must be cautious of [Impermanent Loss (IL)](https://www.youtube.com/watch?v=8XJ1MSTEuU0&t=2s&ab_channel=Finematics).
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+Part 1: Getting Reservese 🏦 
+1. How do we ensure the sender isn't sending 0 ETH?
+2. We need to calculate the ratio of ETH and $BAL after the liquidity provider sends ETH, what variables do we need? It's similar to the previous section. What was that operation we performed on `ethReserve` to make sure we were getting the balance *before* the `msg.value` went through? We need to do that again for the same reason.
+3. What other asset do we need and how do we get it's balance in this contract?
+
+Part 2: Performing Calculations 🤖 
+> What are we calculating again? Oh yeah, how many tokens the sender is depositing according to how much ETH they're depositing, and how much ETH they are depositing. We want their ETH deposit to also deposit a proportional amount of tokens. 
+1. How do we calculate how many tokens 
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
 
@@ -402,9 +414,26 @@ Let’s create two new functions that let us deposit and withdraw liquidity. How
         totalLiquidity += liquidityMinted;
 
         require(token.transferFrom(msg.sender, address(this), tokenDeposit));
+        // why us user forced to send tokens? ^^
         emit LiquidityProvided(msg.sender, liquidityMinted, msg.value, tokenDeposit);
         return tokenDeposit;
     }
+
+```
+
+</details>
+
+</details>
+
+> 💡 **Remember**: Every time you perform actions with your $BAL tokens (deposit, exchange), you'll need to call `approve()` from the `Balloons.sol` contract **to authorize the DEX address to handle a specific number of your $BAL tokens**. To keep things simple, you can just do that from `Debug Contracts` tab, **ensure you approve a large enough quantity of tokens to not face allowance problems**.
+
+> 💬💬 _More Hints:_ The `withdraw()` function lets a user take his Liquidity Provider Tokens out, withdrawing both ETH and $BAL tokens out at the correct ratio. The actual amount of ETH and tokens a liquidity provider withdraws could be higher than what they deposited because of the 0.3% fees collected from each trade. It also could be lower depending on the price fluctuations of $BAL to ETH and vice versa (from token swaps taking place using your AMM!). The 0.3% fee incentivizes third parties to provide liquidity, but they must be cautious of [Impermanent Loss (IL)](https://www.youtube.com/watch?v=8XJ1MSTEuU0&t=2s&ab_channel=Finematics).
+
+
+
+
+<details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
+```
 
     function withdraw(uint256 amount) public returns (uint256 eth_amount, uint256 token_amount) {
         require(liquidity[msg.sender] >= amount, "withdraw: sender does not have enough liquidity to withdraw.");
