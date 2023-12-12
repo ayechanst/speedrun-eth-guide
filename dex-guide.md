@@ -81,8 +81,6 @@ We want to create an automatic market where our contract will hold reserves of b
 1. How do we declare a variable that represents an amount of ETH? We don't have to assign it a value just yet.
 2. What data structure represents the relation between keys and values, addresses and liquidity?
 
-</details>
-
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
 ```
@@ -91,6 +89,9 @@ mapping (address => uint256) public liquidity;
 ```
 
 </details>
+
+</details>
+
 
 These variables track the total liquidity, but also by individual addresses too.
 Now, let's create an `init()` function in `DEX.sol`. 
@@ -103,8 +104,6 @@ We want this function written in a way that when we send ETH and/or $BAL tokens 
 3. How would we assign our address the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?
 4. Now that we set up ETH related things, we need to take care of the tokens `init()` is receiving. How do we transfer the tokens from the sender to this contract address? How do we make sure the transaction reverts if the sender did not have as many tokens as they wanted to send?
 5. Let's say we want to check our `totalLiquidity` in the front end, what does this function need to do so we can read `totalLiquidity` after calling it?
-
-</details>
 
 <details markdown='1'><summary> 👨🏻‍🏫 Solution Code</summary>
 
@@ -119,6 +118,9 @@ We want this function written in a way that when we send ETH and/or $BAL tokens 
 ```
 
 </details>
+
+</details>
+
 
 Calling `init()` will load our contract up with both ETH and 🎈 Balloons.
 
