@@ -76,12 +76,12 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 
 We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets.
 
-<details markdown='1'><summary>🦉 Guiding Questions Version 1</summary>
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. How do we declare a variable that represents an amount of ETH? We don't have to assign it a value just yet.
 2. What data structure represents the relation between keys and values, addresses and liquidity?
 
-</detail>
+</details>
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
@@ -96,7 +96,7 @@ These variables track the total liquidity, but also by individual addresses too.
 Now, let's create an `init()` function in `DEX.sol`. 
 We want this function written in a way that when we send ETH and/or $BAL tokens through our front end or deployer script, the function will get those values from the contract and assign them onto the global variables we just defined. 
 
-<details markdown='1'><summary>🦉 Guiding Questions Version 1</summary>
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. Do we want to provide liquidity if the contract already has liquidity? How can we help/prevent this from happening?
 2. What is the value of `totalLiquidity`, how do we access the value/balance that our contract has?
