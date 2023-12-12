@@ -76,6 +76,13 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 
 We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets.
 
+<details markdown='1'><summary>🦉 Guiding Questions Version 1</summary>
+
+1. How do we declare a variable that represents an amount of ETH? We don't have to assign it a value just yet.
+2. What data structure represents the relation between keys and values, addresses and liquidity?
+
+</detail>
+
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
 ```
@@ -92,26 +99,10 @@ We want this function written in a way that when we send ETH and/or $BAL tokens 
 <details markdown='1'><summary>🦉 Guiding Questions Version 1</summary>
 
 1. Do we want to provide liquidity if the contract already has liquidity? How can we help/prevent this from happening?
-2. How are we going to assign the liquidity/balance in the contract to `totalLiquidity` so we can do things with the value?
-3. We are the ones who sent the liquidity, how would we assign ourselves (as an individual) the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?
-4. If we want to send tokens, how do we transfer those `tokens` from our parameter to the contract? How do we make sure the transaction fails if our wallet has less tokens than the amount we want to send?
-
-</details>
-
-<details markdown='1'><summary>🦉 Steps Version 2</summary>
-
-1. Assign the balance of the contract to `totalLiquidity`. 
-2. Give yourself the `totalLiquidity` you just provided.
-3. Transfer the tokens from yourself to the contract
-
-</details>
-
-<details markdown='1'><summary>🦉 Solution Explantion</summary>
-
-First we just want to make sure that the DEX starts without any liquidity. This `init()` function can be sent ETH since it's `payable`, or $BAL tokens since our parameter is any amount of `tokens`. If we did send ETH, we want to update the global variable `totalLiquidity` to the balance of this address so we can easily use the value later.  
-We also want to update our `liquidity` mapping (in case we sent ETH) to represent us, the msg.sender, as having a balance of ETH equal to the `totalLiquidity`. This is because we provided all the liquidity so far. If we also want to send tokens, we need to transfer the tokens from the function argument to the address of the contract.  
-The `token` variable set in the constructor has an address assigned to it already, and it has inherited the methods associated with the Open Zepplin IERC20 token contract. This means we can use methods on it one of those being the `transferFrom()` function. Using the dot operator on `token`, we can transfer tokens from a `msg.sender` which is us, to an `address(this)` meaning this contract, a certain amount of tokens. In this case all the tokens specified in the function arguments. We wrap this line in a require statement so that if you, the liquidity provider, does not have enough tokens, the whole function reverts and everyone stays safe.  
-We return `totalLiquidity` at the end in case we want to verify liquidity was sent and the function ran properly. 
+2. What is the value of `totalLiquidity`, how do we access the value/balance that our contract has?
+3. How would we assign our address the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?
+4. Now that we set up ETH related things, we need to take care of the tokens `init()` is receiving. How do we transfer the tokens from the sender to this contract address? How do we make sure the transaction reverts if the sender did not have as many tokens as they wanted to send?
+5. Let's say we want to check our `totalLiquidity` in the front end, what does this function need to do so we can read `totalLiquidity` after calling it?
 
 </details>
 
@@ -239,6 +230,10 @@ To make things easier, let's think of percentages and decimals as fractions. For
 
 </details>
 
+> 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
+
+> 💡💡 _More Hints:_ Also, don't forget to think about how to implement the trading fee. Solidity doesn't allow for decimals, so one way that contracts are written to implement percentage is using whole uints (997 and 1000) as numerator and denominator factors, respectively.
+
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
 ```
@@ -284,9 +279,6 @@ Finally, let’s say the ratio is the same but we want to swap 100,000 tokens in
 - [ ] 🤔 Do you understand how the x\*y=k price curve actually works? Write down a clear explanation for yourself and derive the formula for price. You might have to shake off some old algebra skills!
 - [ ] 💃 You should be able to go through the price section of this tutorial with the sample numbers and generate the same outputChange variable.
 
-> 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
-
-> 💡💡 _More Hints:_ Also, don't forget to think about how to implement the trading fee. Solidity doesn't allow for decimals, so one way that contracts are written to implement percentage is using whole uints (997 and 1000) as numerator and denominator factors, respectively.
 
 ---
 ## Checkpoint 4: Trading 🤝
@@ -295,9 +287,16 @@ Let’s edit the `DEX.sol` smart contract and add two new functions for swapping
 
 The basic overview for `ethToToken()` is we're going to define our arguments to pass into `price()` so we can calculate what the user's `tokenOutput` is going to be for however much ETH they send through.
 
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
 
-> 💡 _Hints:_ `xReserves` needs to be the ETH balance of the contract. But when we call this payable function the balance will increase before our `price()` function is ran. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
+1. How would we make sure the value being being swapped for balloons is greater than 0? 
+2. Is `xReserves` ETH or $BAL tokens? Use a variable name the describes which one it is. When we call this function it will already have the value we sent it in it's `liquidity`. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
+3. For `yReserves` we will also want to create a new more descriptive variable name. How do we find the other asset balance this address has?
+4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable?
+5. After getting how many tokens the sender should receive, how do we transfer those tokens to the sender?
+6. Last we will emit the `EthToTokenSwap` event to record this transaction.
 
+</details>
 
 <details markdown='1'><summary>👨🏻‍🏫 ethToToken() Solution Code </summary>
 
@@ -320,7 +319,19 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 
 </details>
 
-Works? Great! The for `tokenToEth()` we will do more or less the same except we don't have to worry about prematurely sending tokens to our contract. Also instead of a `.transfer()` we can introduce you to a low level method available on addresses: `.call` which you can read more about [here](https://solidity-by-example.org/call/), or ask chatGPT 🤖 Either way make sure you understand the differences between the two ways of sending `ethOuput`.
+😎 Great now onto the next! `tokenToEth()` is going to do the opposite so it should be pretty straight forward. But if you get stuck the guiding questions are always there 🦉 
+
+
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+1. How would we make sure the value being being swapped for ETH is greater than 0? 
+2. Is `xReserves` ETH or $BAL tokens? Use a variable name the describes which one it is. 
+3. For `yReserves` we will also want to create a new more descriptive variable name. How do we find the other asset balance this address has?
+4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable?
+5. After getting how many ETH the sender should receive, how do we transfer the ETH to the sender? 
+6. Last we will emit the `tokenToEthSwap` event to record this transaction.
+
+</details>
 
 <details markdown='1'><summary>👨🏻‍🏫 tokenToEth() Solution Code </summary>
 
@@ -339,6 +350,11 @@ Works? Great! The for `tokenToEth()` we will do more or less the same except we 
         return ethOutput;
     }
 ```
+
+⚠ You may notice some differences between the two functions:
+1. Instead of creating a new variable for `yInput`, we just have `address(this).balance` as an arugment in `price()`. The upside is our function is slightly less long, at the cost of being slightly less readable.
+2. `(bool sent, ) = msg.sender.call{ value: ethOutput }("");` 😕 This line is just using a low level call instead of a high level call. As you progress through these challenges get familiar with looking at other ways of doing things. So when you encouter them in the wild they make sense, and you can get more flexible with how you write Solidity. [https://solidity-by-example.org/call/](Here's) more info about `.call`.
+3. `require(sent, "tokenToEth: revert in transferring eth to you!");` 😕 This is the continuation of the previous line, it just checks that the bool was set to true if the `.call` returns true (which it will if the value is successfully sent). `.call` is a bit less safe than `.transfer` so we need to add this check. We want to add checks to anythig that sends value in general so the whole function reverts if anything goes wrong. 
 
 </details>
 
