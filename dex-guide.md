@@ -296,7 +296,7 @@ Let’s edit the `DEX.sol` smart contract and add two new functions for swapping
 The basic overview for `ethToToken()` is we're going to define our arguments to pass into `price()` so we can calculate what the user's `tokenOutput` is going to be for however much ETH they send through.
 
 
-> `xReserves` needs to be the ETH balance of the contract. But when we call this payable function the balance will increase before our `price()` function is ran. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
+> 💡 _Hints:_ `xReserves` needs to be the ETH balance of the contract. But when we call this payable function the balance will increase before our `price()` function is ran. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
 
 
 <details markdown='1'><summary>👨🏻‍🏫 ethToToken() Solution Code </summary>
@@ -320,18 +320,7 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 
 </details>
 
-Great one function down, one more to go in this section! `tokenToEth()` does the opposite of `ethToToken()` but the code is not an inversed replica because our order of operations are a bit different. The main difference lies in that since the user is sending tokens, not ETH, so we can't use `msg.value` to see how much was sent through. Instead the function will take an argument of `tokenInput` to see how many $BAL tokens are sent. 
-
-<details markdown='1'><summary>🦉 Guiding Questions</summary>
-
-1. Require that the `tokenInput` is greater than 0.
-2. Should `token_reserve` be any different than the previous function? 
-3. Do we have all the information we need to use our `price()` function and assign the result to `ethOutput`? And is `token_reserve` our `xInput`, or `yInput` in this case? Think about if the user is sending ETH or $BAL, should the `numerator` in our `price()` function be multiplying different units? Once you figured that out store the result of `price()` into `ethOutput`!
-4. Now let's transfer the `tokenInput` to the address of this contract. Here we will want to use token.transferFrom() instead of token.transfer() like we did in the last function. The arguments look like this: token.transferFrom(addressOfTokenSender, addressOfTokenReceiver, amountOfTokens). Wrap that in a require statement and lay the appropriate arguments down!
-5. 
-
-
-</details>
+Works? Great! The for `tokenToEth()` we will do more or less the same except we don't have to worry about prematurely sending tokens to our contract. Also instead of a `.transfer()` we can introduce you to a low level method available on addresses: `.call` which you can read more about [here](https://solidity-by-example.org/call/), or ask chatGPT 🤖 Either way make sure you understand the differences between the two ways of sending `ethOuput`.
 
 <details markdown='1'><summary>👨🏻‍🏫 tokenToEth() Solution Code </summary>
 
