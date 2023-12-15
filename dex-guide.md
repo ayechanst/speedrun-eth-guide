@@ -439,6 +439,26 @@ Part 3: Updating, Transferring, Emitting, and Returning 🎀
 
 > 💬💬 _More Hints:_ The `withdraw()` function lets a user take his Liquidity Provider Tokens out, withdrawing both ETH and $BAL tokens out at the correct ratio. The actual amount of ETH and tokens a liquidity provider withdraws could be higher than what they deposited because of the 0.3% fees collected from each trade. It also could be lower depending on the price fluctuations of $BAL to ETH and vice versa (from token swaps taking place using your AMM!). The 0.3% fee incentivizes third parties to provide liquidity, but they must be cautious of [Impermanent Loss (IL)](https://www.youtube.com/watch?v=8XJ1MSTEuU0&t=2s&ab_channel=Finematics).
 
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+Part 1: Getting Reservese 🏦 
+1. How can we verify that user is withdrawing an `amount` of `liquidity` that they actually have? 
+2. Just like the `deposit()` we need both assets. How much ETH does our DEX have? Remember this function is not payable, so we don't have to subtract anything.
+3. What is the value of `tokenReserve`?
+
+Part 2: Performing Calculations 🤖 
+> We need to calculate how much of each asset our user is going withdraw, call them `ethWithdrawn` and `tokenAmount`. The equation is: amount * reserveOfDesiredUnits / totalLiquidity
+4. How do we get `ethWithdrawn`?
+5. How do we get `tokenOutput`?
+
+Part 3: Updating, Transferring, Emitting, and Returning 🎀 
+6. The user is withdrawing, how do we represent this decrease in this individual's `liquidity`?
+7. The DEX also lost liquidity, how should we update `totalLiquidity`?
+8. How do pay the user the value of `ethWithdrawn`?
+9. How do we give them thier tokens? 
+10. We have an event to emit, which one?
+11. Last, what are we returning?
+
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
 
 ```
@@ -462,6 +482,8 @@ Part 3: Updating, Transferring, Emitting, and Returning 🎀
     }
 
 ```
+
+ </details>
 
  </details>
 
