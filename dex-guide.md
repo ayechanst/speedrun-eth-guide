@@ -387,14 +387,25 @@ What does this hint mean in practice? The goal is to allow a user to `deposit()`
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
+
 Part 1: Getting Reservese 🏦 
 1. How do we ensure the sender isn't sending 0 ETH?
 2. We need to calculate the ratio of ETH and $BAL after the liquidity provider sends ETH, what variables do we need? It's similar to the previous section. What was that operation we performed on `ethReserve` to make sure we were getting the balance *before* the `msg.value` went through? We need to do that again for the same reason.
-3. What other asset do we need and how do we get it's balance in this contract?
+3. What other asset do we need to declare a reserve for and how do we get it's balance in this contract?
+
+- [ ] Do you have reserves of both assets?
 
 Part 2: Performing Calculations 🤖 
-> What are we calculating again? Oh yeah, how many tokens the sender is depositing according to how much ETH they're depositing, and how much ETH they are depositing. We want their ETH deposit to also deposit a proportional amount of tokens. 
-1. How do we calculate how many tokens 
+> What are we calculating again? Oh yeah, for however much ETH the user is depositing, we want them to also deposit an equal amount of tokens. Let's make a reusable equation where we can swap out a value and get an output of the ETH and $BAL the user will be depositing, named `tokenDeposit` and `liquidityMinted`. 
+5. How do we calculate how many tokens the user needs to deposit? You multiply the value the user sends through by reserves of the units we want as an output. Then we divide by `ethReserve` and add 1 the the whole result.
+6. Now for `liquidityMinted` use the same equation but replace `tokenReserve` with `totalLiquidity`, so that we are multiplying in the numerator by the units we want. 
+
+Part 3: Updating, Transferring, Emitting, and Returning 🎀 
+7. Now that the DEX has more assests, should we update our two global variables? How do we update `liquidity`?
+8. How do we update `totalLiquidity`?
+9. The user already sent deposited their ETH, but they still have to deposit their tokens. How do we require a token transfer from them?
+10. We just completed something important, which event should we emit?
+11. What should the last line of the function (look at the function signature). 
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
 
@@ -414,7 +425,6 @@ Part 2: Performing Calculations 🤖
         totalLiquidity += liquidityMinted;
 
         require(token.transferFrom(msg.sender, address(this), tokenDeposit));
-        // why us user forced to send tokens? ^^
         emit LiquidityProvided(msg.sender, liquidityMinted, msg.value, tokenDeposit);
         return tokenDeposit;
     }
@@ -429,10 +439,8 @@ Part 2: Performing Calculations 🤖
 
 > 💬💬 _More Hints:_ The `withdraw()` function lets a user take his Liquidity Provider Tokens out, withdrawing both ETH and $BAL tokens out at the correct ratio. The actual amount of ETH and tokens a liquidity provider withdraws could be higher than what they deposited because of the 0.3% fees collected from each trade. It also could be lower depending on the price fluctuations of $BAL to ETH and vice versa (from token swaps taking place using your AMM!). The 0.3% fee incentivizes third parties to provide liquidity, but they must be cautious of [Impermanent Loss (IL)](https://www.youtube.com/watch?v=8XJ1MSTEuU0&t=2s&ab_channel=Finematics).
 
-
-
-
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
+
 ```
 
     function withdraw(uint256 amount) public returns (uint256 eth_amount, uint256 token_amount) {
