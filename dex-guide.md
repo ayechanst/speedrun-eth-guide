@@ -230,7 +230,6 @@ To make things easier, let's think of percentages and decimals as fractions. For
 1. To get `xInputWithFee`, let's think about how we normally calculate items that are on sale. If something is 30% off, we multiply the item's price by 0.70 to get the final cost. `xInputWithFee` is just like a discount. What can we multiply `xInput` by so its 0.3% off? 0.997 would work but we can't use decimals. Perhaps we just multiply `xInput` by 997 and divide by 1000 in our numerator?
 2. Now let's make a variable `numerator` that represent `k`. 
 
-</details>
 
 > 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
 
@@ -252,6 +251,8 @@ To make things easier, let's think of percentages and decimals as fractions. For
     }
 
 ```
+
+</details>
 
 </details>
 
@@ -496,6 +497,7 @@ Part 3: Updating, Transferring, Emitting, and Returning 🎀
 - [ ] 🧐 What happens if you `deposit()` at the beginning of the deployed contract, then another user starts swapping out for most of the balloons, and then you try to withdraw your position as a liquidity provider? Answer: you should get the amount of liquidity proportional to the ratio of assets within the isolated liquidity pool. It will not be 1:1.
 
 ---
+
 ---
 ## Checkpoint 6: UI 🖼
 
