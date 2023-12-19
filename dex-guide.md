@@ -1,3 +1,10 @@
+This is a test 
+jffsdkdsf
+jfkaf
+fjdaskfjs
+
+
+
 # 🚩 Challenge 4: ⚖️ Build a DEX
 
 ![readme-4](https://github.com/scaffold-eth/se-2-challenges/assets/55535804/a4807ee8-555a-4466-8216-0d91e0e76c33)
