@@ -67,7 +67,7 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 > 🎉 You've made it this far in Scaffold-Eth Challenges 👏🏼 . As things get more complex, it might be good to review the design requirements of the challenge first!  
 > Check out the empty `DEX.sol` file to see aspects of each function. If you can explain how each function will work with one another, that's great! 😎
 
-> 🚨 🚨 🦖 **The Guiding Questions will lead you in the right direction, but try to think about how you would structure the function before checking them!**
+> 🚨 🚨 🦈 **The Guiding Questions will lead you in the right direction, but try to think about how you would structure the function before checking them!**
 
 > 🚨 🚨 🦖 **The code blobs within the toggles in the Guiding Questions are some examples of what you can use, but try writing the implementation code for the functions first!**
 
@@ -75,12 +75,12 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 
 ## Checkpoint 2: Reserves ⚖️
 
-We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets.
+We want to create an automatic market where our contract will hold reserves of both ETH and 🎈 Balloons. These reserves will provide liquidity that allows anyone to swap between the assets. Let's start with declaring our `totalLiquidity` and the `liquidity` of each user of our DEX!
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. How do we declare a variable that represents an amount of ETH? We don't have to assign it a value just yet.
-2. What data structure represents the relation between keys and values, addresses and liquidity?
+2. What data structure represents the relation between keys and values (addresses and liquidity, users and ETH)??
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
@@ -93,7 +93,6 @@ mapping (address => uint256) public liquidity;
 
 </details>
 
-
 These variables track the total liquidity, but also by individual addresses too.
 Now, let's create an `init()` function in `DEX.sol`. 
 We want this function written in a way that when we send ETH and/or $BAL tokens through our front end or deployer script, the function will get those values from the contract and assign them onto the global variables we just defined. 
@@ -101,9 +100,9 @@ We want this function written in a way that when we send ETH and/or $BAL tokens 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. Do we want to provide liquidity if the contract already has liquidity? How can we help/prevent this from happening?
-2. What is the value of `totalLiquidity`, how do we access the value/balance that our contract has?
-3. How would we assign our address the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half?
-4. Now that we set up ETH related things, we need to take care of the tokens `init()` is receiving. How do we transfer the tokens from the sender to this contract address? How do we make sure the transaction reverts if the sender did not have as many tokens as they wanted to send?
+2. What should the value of `totalLiquidity` be, how do we access the balance that our contract has and assign the variable a value?
+3. How would we assign our address the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half? Three quarters?
+4. Now we need to take care of the tokens `init()` is receiving. How do we transfer the tokens from the sender (us) to this contract address? How do we make sure the transaction reverts if the sender did not have as many tokens as they wanted to send?
 5. Let's say we want to check our `totalLiquidity` in the front end, what does this function need to do so we can read `totalLiquidity` after calling it?
 
 <details markdown='1'><summary> 👨🏻‍🏫 Solution Code</summary>
@@ -125,7 +124,7 @@ We want this function written in a way that when we send ETH and/or $BAL tokens 
 
 Calling `init()` will load our contract up with both ETH and 🎈 Balloons.
 
-We can see that the DEX starts empty. We want to be able to call `init()` to start it off with liquidity, but we don’t have any funds or tokens yet. Add some ETH to your local account using the faucet and then find the `00_deploy_your_contract.ts` file. Find and uncomment the lines below and add your front-end address:
+We can see that the DEX starts empty. We want to be able to call `init()` to start it off with liquidity, but we don’t have any funds or tokens yet. Add some ETH to your local account using the faucet and then find the `00_deploy_your_contract.ts` file. Find and uncomment the lines below and add your front-end address (your burner wallet address)?
 
 ```
   // // paste in your front-end address here to get 10 balloons on deploy:
@@ -208,29 +207,15 @@ Now, try to edit your `DEX.sol` smart contract and bring in a price function!
 The price function should take in the reserves of `xReserves`, `yReserves`, and `xInput` to calculate the `yOutput`.
 Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats or decimals in Solidity, only whole numbers!
 
-What does all this mean in terms of math? We need to use `x * y = k` and solve for `y`. `x` is our input, and `k` is the constant supply of either $BAL tokens or ETH.
-How do we implement trading fees in all this without using decimals? We can represent decimals as fractions. For example 9/10 is 0.9, or 90% of something, and 0.3% is 0.003, or 3/1000. 
 We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply `k` 😨 
 
 One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
-<details markdown='1'><summary>🦉 Guiding Questions</summary>
+<details markdown='1'><summary>🦉 Guided Explanation</summary>
 
-The math we are doing looks something like this:
-```
-x * y = k // we want to solve for y
+For the math portions of this challenge, you can black-box the math. However it's still important to understand what the math looks like, but maybe less so how it works or why it works, in other words don't get too caught up in the details! 😅 Look at articles and videos in this challenge or on your own to find out more if you're curious though! 🤓 
 
-Divide both sides by x to cancel out the x on the left side of the equal sign
-
-y = k / x
-
-```
-
-To make things easier, let's think of percentages and decimals as fractions. For example, if a shirt at a store is 30% off, we multiply the shirt's price by 0.70 so apply the discount.
-
-1. To get `xInputWithFee`, let's think about how we normally calculate items that are on sale. If something is 30% off, we multiply the item's price by 0.70 to get the final cost. `xInputWithFee` is just like a discount. What can we multiply `xInput` by so its 0.3% off? 0.997 would work but we can't use decimals. Perhaps we just multiply `xInput` by 997 and divide by 1000 in our numerator?
-2. Now let's make a variable `numerator` that represent `k`. 
-
+1. 
 
 > 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
 
