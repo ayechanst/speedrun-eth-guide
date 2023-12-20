@@ -277,16 +277,17 @@ Finally, let’s say the ratio is the same but we want to swap 100,000 tokens in
 
 Let’s edit the `DEX.sol` smart contract and add two new functions for swapping from each asset to the other, `ethToToken()` and `tokenToEth()`. 
 
-The basic overview for `ethToToken()` is we're going to define our arguments to pass into `price()` so we can calculate what the user's `tokenOutput` is going to be for however much ETH they send through.
+The basic overview for `ethToToken()` is we're going to define our variables to pass into `price()` so we can calculate what the user's `tokenOutput` is going to be for however much ETH they send through.
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. How would we make sure the value being being swapped for balloons is greater than 0? 
-2. Is `xReserves` ETH or $BAL tokens? Use a variable name the describes which one it is. When we call this function it will already have the value we sent it in it's `liquidity`. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
+2. Is `xReserves` ETH or $BAL tokens? Use a variable name that best describes which one it is. When we call this function it will already have the value we sent it in it's `liquidity`. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
 3. For `yReserves` we will also want to create a new more descriptive variable name. How do we find the other asset balance this address has?
-4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable?
+4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable? What kind of name would best describe this variable?
 5. After getting how many tokens the sender should receive, how do we transfer those tokens to the sender?
-6. Last we will emit the `EthToTokenSwap` event to record this transaction.
+6. Which event should we emit for this function?
+7. Last, what do we return? 
 
 <details markdown='1'><summary>👨🏻‍🏫 Solution Code </summary>
 
@@ -318,11 +319,12 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. How would we make sure the value being being swapped for ETH is greater than 0? 
-2. Is `xReserves` ETH or $BAL tokens? Use a variable name the describes which one it is. 
-3. For `yReserves` we will also want to create a new more descriptive variable name. How do we find the other asset balance this address has?
+2. Is `xReserves` ETH or $BAL tokens this time? Use a variable name the describes which one it is. 
+3. For `yReserves` we will also want to create a new and more descriptive variable name. How do we find the other asset balance this address has?
 4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable?
 5. After getting how many ETH the sender should receive, how do we transfer the ETH to the sender? 
-6. Last we will emit the `tokenToEthSwap` event to record this transaction.
+6. Which event do we emit for this function?
+7. Lastly, what are we returning?
 
 <details markdown='1'><summary>👨🏻‍🏫 Solution Code </summary>
 
@@ -343,9 +345,9 @@ The basic overview for `ethToToken()` is we're going to define our arguments to 
 ```
 
 ⚠ You may notice some differences between the two functions:
-1. Instead of creating a new variable for `yInput`, we just have `address(this).balance` as an arugment in `price()`. The upside is our function is slightly less long, at the cost of being slightly less readable.
-2. `(bool sent, ) = msg.sender.call{ value: ethOutput }("");` 😕 This line is just using a low level call instead of a high level call. As you progress through these challenges get familiar with looking at other ways of doing things. So when you encouter them in the wild they make sense, and you can get more flexible with how you write Solidity. [https://solidity-by-example.org/call/](Here's) more info about `.call`.
-3. `require(sent, "tokenToEth: revert in transferring eth to you!");` 😕 This is the continuation of the previous line, it just checks that the bool was set to true if the `.call` returns true (which it will if the value is successfully sent). `.call` is a bit less safe than `.transfer` so we need to add this check. We want to add checks to anythig that sends value in general so the whole function reverts if anything goes wrong. 
+1. Instead of creating a new variable for `yInput`, we just have `address(this).balance` as an arugment in `price()`. The upside is our function is a bit shorter, at the cost of readability. Dealer's choice! 🐸 
+2. `(bool sent, ) = msg.sender.call{ value: ethOutput }("");` 😕 This line is just using a low level call instead of a high level call. As you progress through these challenges get familiar with doing the same thing different ways. That way when you encouter them in the wild they make sense, and you can get more flexible with how you write Solidity. [https://solidity-by-example.org/call/](Here's) more info about `.call`.
+3. `require(sent, "tokenToEth: revert in transferring eth to you!");` 😕 This is the continuation of the previous line, it just checks that the returned boolean value from `.call` was set to true (which it will if the value is successfully sent). `.call` is a bit less safe than `.transfer` so we need to add this check. We want to add checks to anythig that sends value in general so the whole function reverts if anything goes wrong. 
 
 </details>
 
