@@ -211,15 +211,18 @@ We should apply the fee to `xInput`, and store it in a new variable `xInputWithF
 
 One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
+> 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
+
+> 💡💡 _More Hints:_ Also, don't forget to think about how to implement the trading fee. Solidity doesn't allow for decimals, so one way that contracts are written to implement percentage is using whole uints (997 and 1000) as numerator and denominator factors, respectively.
+
 <details markdown='1'><summary>🦉 Guided Explanation</summary>
 
 For the math portions of this challenge, you can black-box the math. However it's still important to understand what the math looks like, but maybe less so how it works or why it works, in other words don't get too caught up in the details! 😅 Look at articles and videos in this challenge or on your own to find out more if you're curious though! 🤓 
 
-1. 
-
-> 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
-
-> 💡💡 _More Hints:_ Also, don't forget to think about how to implement the trading fee. Solidity doesn't allow for decimals, so one way that contracts are written to implement percentage is using whole uints (997 and 1000) as numerator and denominator factors, respectively.
+1. We are multiplying `xInput` by 997 to "simulate" a multiplication by 0.997 since we can't use decimals in solidity. We'll divide by 1000 later to get the fee back to normal.
+2. Next we'll make our `numerator` by multiplying `xInputWithFee` by `yReserves`.
+3. Then our `denominator` will be `xReserves` multiplied by 1000 (to account for the 997 in the numerator) plus `xInputWithFee`.
+4. Last we will return the `numerator` / `denominator` which is our `yOutput`, or the amount of swapped currency. But wait can't we not have decimals in Solidity? We cannot so the output will be rounded up or down to the nearest whole number.
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
