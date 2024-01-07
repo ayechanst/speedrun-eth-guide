@@ -281,7 +281,7 @@ The basic overview for `ethToToken()` is we're going to define our variables to 
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
-1. How would we make sure the value being being swapped for balloons is greater than 0? 
+1. How would we make sure the value being swapped for balloons is greater than 0? 
 2. Is `xReserves` ETH or $BAL tokens? Use a variable name that best describes which one it is. When we call this function it will already have the value we sent it in it's `liquidity`. How can we make sure we are using the balance of the contract *before* any ETH was sent to it?
 3. For `yReserves` we will also want to create a new more descriptive variable name. How do we find the other asset balance this address has?
 4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable? What kind of name would best describe this variable?
@@ -375,14 +375,13 @@ Let’s create two new functions that let us deposit and withdraw liquidity. How
 
 > The `deposit()` function receives ETH and also transfers $BAL tokens from the caller to the contract at the right ratio. The contract also tracks the amount of liquidity (how many liquidity provider tokens (LPTs) minted) the depositing address owns vs the totalLiquidity.
 
-What does this hint mean in practice? The goal is to allow a user to `deposit()` ETH into our `totalLiquidity`, and update their `liquidity`. This is very similar to the `init()` function, except we want this to work for everyone. Also since there already is liquidity we want the liquidity they provide leave the invariant `k` unchanged. 
+What does this hint mean in practice? The goal is to allow a user to `deposit()` ETH into our `totalLiquidity`, and update their `liquidity`. This is very similar to the `init()` function, except we want it to work for anyone providing liquidity. Also since there already is liquidity we want the liquidity they provide to leave the invariant `k` unchanged. 
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
-
 Part 1: Getting Reservese 🏦 
 1. How do we ensure the sender isn't sending 0 ETH?
-2. We need to calculate the ratio of ETH and $BAL after the liquidity provider sends ETH, what variables do we need? It's similar to the previous section. What was that operation we performed on `ethReserve` to make sure we were getting the balance *before* the `msg.value` went through? We need to do that again for the same reason.
+2. We need to calculate the ratio of ETH and $BAL after the liquidity provider sends ETH, what variables do we need? It's similar to the previous section. What was that operation we performed on `ethReserve` in Checkpoint 4 to make sure we were getting the balance *before* the `msg.value` went through? We need to do that again for the same reason.
 3. What other asset do we need to declare a reserve for and how do we get it's balance in this contract?
 
 - [ ] Do you have reserves of both assets?
@@ -390,7 +389,10 @@ Part 1: Getting Reservese 🏦
 Part 2: Performing Calculations 🤖 
 > What are we calculating again? Oh yeah, for however much ETH the user is depositing, we want them to also deposit an equal amount of tokens. Let's make a reusable equation where we can swap out a value and get an output of the ETH and $BAL the user will be depositing, named `tokenDeposit` and `liquidityMinted`. 
 5. How do we calculate how many tokens the user needs to deposit? You multiply the value the user sends through by reserves of the units we want as an output. Then we divide by `ethReserve` and add 1 the the whole result.
-6. Now for `liquidityMinted` use the same equation but replace `tokenReserve` with `totalLiquidity`, so that we are multiplying in the numerator by the units we want. 
+6. Now for `liquidityMinted` use the same equation but replace `tokenReserve` with `totalLiquidity`, so that we are multiplying in the numerator by the units we want.
+
+- [ ] Is `tokenDeposit` assigned the value of our equation?
+- [ ] Now is `liquidityMinted` looking similar to `tokenDeposit` but without the `+ 1` at the end?
 
 Part 3: Updating, Transferring, Emitting, and Returning 🎀 
 7. Now that the DEX has more assests, should we update our two global variables? How do we update `liquidity`?
@@ -447,7 +449,7 @@ Part 3: Updating, Transferring, Emitting, and Returning 🎀
 6. The user is withdrawing, how do we represent this decrease in this individual's `liquidity`?
 7. The DEX also lost liquidity, how should we update `totalLiquidity`?
 8. How do pay the user the value of `ethWithdrawn`?
-9. How do we give them thier tokens? 
+9. How do we give them their tokens? 
 10. We have an event to emit, which one?
 11. Last, what are we returning?
 
