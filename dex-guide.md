@@ -387,11 +387,12 @@ Part 2: Performing Calculations 🤖
 - [ ] Now is `liquidityMinted` looking similar to `tokenDeposit` but without the `+ 1` at the end?
 
 Part 3: Updating, Transferring, Emitting, and Returning 🎀 
+
 7. Now that the DEX has more assests, should we update our two global variables? How do we update `liquidity`?
 8. How do we update `totalLiquidity`?
 9. The user already sent deposited their ETH, but they still have to deposit their tokens. How do we require a token transfer from them?
 10. We just completed something important, which event should we emit?
-11. What should the last line of the function (look at the function signature). 
+11. What do we return?
 
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
