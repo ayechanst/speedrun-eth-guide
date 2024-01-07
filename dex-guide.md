@@ -93,7 +93,7 @@ mapping (address => uint256) public liquidity;
 
 </details>
 
-These variables track the total liquidity, but also by individual addresses too.
+These variables track the total liquidity, but also the liquidity of each address.
 Now, let's create an `init()` function in `DEX.sol`. 
 We want this function written in a way that when we send ETH and/or $BAL tokens through our front end or deployer script, the function will get those values from the contract and assign them onto the global variables we just defined. 
 
@@ -207,7 +207,7 @@ Now, try to edit your `DEX.sol` smart contract and bring in a price function!
 The price function should take in the reserves of `xReserves`, `yReserves`, and `xInput` to calculate the `yOutput`.
 Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats or decimals in Solidity, only whole numbers!
 
-We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply `k` 😨 
+We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply `k` 😨 Think about how to apply a 0.3% to our `xInput`.
 
 One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
@@ -217,7 +217,7 @@ One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it
 
 <details markdown='1'><summary>🦉 Guided Explanation</summary>
 
-For the math portions of this challenge, you can black-box the math. However it's still important to understand what the math looks like, but maybe less so how it works or why it works, in other words don't get too caught up in the details! 😅 Look at articles and videos in this challenge or on your own to find out more if you're curious though! 🤓 
+For the math portions of this challenge, you can black-box the math. However it's still important to understand what the math looks like, but maybe less so how it works or why it works, in other words don't get too caught up in the mathematical details! 😅 Look at articles and videos in this challenge or on your own to find out more if you're curious though! 🤓 
 
 1. We are multiplying `xInput` by 997 to "simulate" a multiplication by 0.997 since we can't use decimals in solidity. We'll divide by 1000 later to get the fee back to normal.
 2. Next we'll make our `numerator` by multiplying `xInputWithFee` by `yReserves`.
