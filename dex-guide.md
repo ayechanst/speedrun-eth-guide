@@ -1,4 +1,3 @@
-this is a test
 # 🚩 Challenge 4: ⚖️ Build a DEX
 
 ![readme-4](https://github.com/scaffold-eth/se-2-challenges/assets/55535804/a4807ee8-555a-4466-8216-0d91e0e76c33)
@@ -68,7 +67,7 @@ Navigate to the `Debug Contracts` tab, you should see two smart contracts displa
 > 🎉 You've made it this far in Scaffold-Eth Challenges 👏🏼 . As things get more complex, it might be good to review the design requirements of the challenge first!  
 > Check out the empty `DEX.sol` file to see aspects of each function. If you can explain how each function will work with one another, that's great! 😎
 
-> 🚨 🚨 🦈 **The Guiding Questions will lead you in the right direction, but try to think about how you would structure the function before checking them!**
+> 🚨 🚨 🦈 **The Guiding Questions will lead you in the right direction, but try thinking about how you would structure each function before looking at these!**
 
 > 🚨 🚨 🦖 **The code blobs within the toggles in the Guiding Questions are some examples of what you can use, but try writing the implementation code for the functions first!**
 
@@ -81,7 +80,7 @@ We want to create an automatic market where our contract will hold reserves of b
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 1. How do we declare a variable that represents an amount of ETH? We don't have to assign it a value just yet.
-2. What data structure represents the relation between keys and values (addresses and liquidity, users and ETH)??
+2. What data structure represents the relation between keys and values (addresses to liquidity or users to ETH)??
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
