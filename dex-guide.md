@@ -440,6 +440,7 @@ Part 2: Performing Calculations 🤖
 5. How do we get `tokenOutput`?
 
 Part 3: Updating, Transferring, Emitting, and Returning 🎀 
+
 6. The user is withdrawing, how do we represent this decrease in this individual's `liquidity`?
 7. The DEX also lost liquidity, how should we update `totalLiquidity`?
 8. How do pay the user the value of `ethWithdrawn`?
