@@ -103,7 +103,6 @@ We want this function written in a way that when we send ETH and/or $BAL tokens 
 2. What should the value of `totalLiquidity` be, how do we access the balance that our contract has and assign the variable a value?
 3. How would we assign our address the liquidity we just provided? How much liquidity have we provided? The `totalLiquidity`? Just half? Three quarters?
 4. Now we need to take care of the tokens `init()` is receiving. How do we transfer the tokens from the sender (us) to this contract address? How do we make sure the transaction reverts if the sender did not have as many tokens as they wanted to send?
-5. Let's say we want to check our `totalLiquidity` in the front end, what does this function need to do so we can read `totalLiquidity` after calling it?
 
 <details markdown='1'><summary> 👨🏻‍🏫 Solution Code</summary>
 
@@ -205,11 +204,9 @@ When we call `init()` we passed in ETH and $BAL tokens at a ratio of 1:1. As the
 Now, try to edit your `DEX.sol` smart contract and bring in a price function!
 
 The price function should take in the reserves of `xReserves`, `yReserves`, and `xInput` to calculate the `yOutput`.
-Don't forget about trading fees! These fees are important to reward and incentive liquidity providers. Let's make the trading fees 0.3% and remember that there are no floats or decimals in Solidity, only whole numbers!
+Don't forget about trading fees! These fees are important to incentivize liquidity providers. Let's make the trading fee 0.3% and remember that there are no floats or decimals in Solidity, only whole numbers!
 
 We should apply the fee to `xInput`, and store it in a new variable `xInputWithFee`. We want the input value to pay the fee immediately, or else we will accidentally tax our `yOutput` or our DEX's supply `k` 😨 Think about how to apply a 0.3% to our `xInput`.
-
-One more thing, `xInputWithFee` represents `xInput` with a fee **applied** to it. The fee has been taken out already and the value is good to go.
 
 > 💡 _Hints:_ For more information on calculating the Output Reserve, read the Brief Revisit of Uniswap V2 in [this article](https://hackernoon.com/formulas-of-uniswap-a-deep-dive).
 
@@ -222,7 +219,7 @@ For the math portions of this challenge, you can black-box the math. However it'
 1. We are multiplying `xInput` by 997 to "simulate" a multiplication by 0.997 since we can't use decimals in solidity. We'll divide by 1000 later to get the fee back to normal.
 2. Next we'll make our `numerator` by multiplying `xInputWithFee` by `yReserves`.
 3. Then our `denominator` will be `xReserves` multiplied by 1000 (to account for the 997 in the numerator) plus `xInputWithFee`.
-4. Last we will return the `numerator` / `denominator` which is our `yOutput`, or the amount of swapped currency. But wait can't we not have decimals in Solidity? We cannot so the output will be rounded up or down to the nearest whole number.
+4. Last we will return the `numerator` / `denominator` which is our `yOutput`, or the amount of swapped currency. But wait can we have decimals in Solidity? No, so the output will be rounded up or down to the nearest whole number.
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code</summary>
 
@@ -277,7 +274,7 @@ Finally, let’s say the ratio is the same but we want to swap 100,000 tokens in
 
 Let’s edit the `DEX.sol` smart contract and add two new functions for swapping from each asset to the other, `ethToToken()` and `tokenToEth()`. 
 
-The basic overview for `ethToToken()` is we're going to define our variables to pass into `price()` so we can calculate what the user's `tokenOutput` is going to be for however much ETH they send through.
+The basic overview for `ethToToken()` is we're going to define our variables to pass into `price()` so we can calculate what the user's `tokenOutput` is.
 
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
@@ -322,7 +319,7 @@ The basic overview for `ethToToken()` is we're going to define our variables to 
 2. Is `xReserves` ETH or $BAL tokens this time? Use a variable name the describes which one it is. 
 3. For `yReserves` we will also want to create a new and more descriptive variable name. How do we find the other asset balance this address has?
 4. Now that we have all our arguments, how do we call `price()` and store the returned value in a new variable?
-5. After getting how many ETH the sender should receive, how do we transfer the ETH to the sender? 
+5. After getting how much ETH the sender should receive, how do we transfer the ETH to the sender? 
 6. Which event do we emit for this function?
 7. Lastly, what are we returning?
 
@@ -343,11 +340,6 @@ The basic overview for `ethToToken()` is we're going to define our variables to 
         return ethOutput;
     }
 ```
-
-⚠ You may notice some differences between the two functions:
-1. Instead of creating a new variable for `yInput`, we just have `address(this).balance` as an arugment in `price()`. The upside is our function is a bit shorter, at the cost of readability. Dealer's choice! 🐸 
-2. `(bool sent, ) = msg.sender.call{ value: ethOutput }("");` 😕 This line is just using a low level call instead of a high level call. As you progress through these challenges get familiar with doing the same thing different ways. That way when you encouter them in the wild they make sense, and you can get more flexible with how you write Solidity. [https://solidity-by-example.org/call/](Here's) more info about `.call`.
-3. `require(sent, "tokenToEth: revert in transferring eth to you!");` 😕 This is the continuation of the previous line, it just checks that the returned boolean value from `.call` was set to true (which it will if the value is successfully sent). `.call` is a bit less safe than `.transfer` so we need to add this check. We want to add checks to anythig that sends value in general so the whole function reverts if anything goes wrong. 
 
 </details>
 
@@ -387,8 +379,8 @@ Part 1: Getting Reservese 🏦
 - [ ] Do you have reserves of both assets?
 
 Part 2: Performing Calculations 🤖 
-> What are we calculating again? Oh yeah, for however much ETH the user is depositing, we want them to also deposit an equal amount of tokens. Let's make a reusable equation where we can swap out a value and get an output of the ETH and $BAL the user will be depositing, named `tokenDeposit` and `liquidityMinted`. 
-5. How do we calculate how many tokens the user needs to deposit? You multiply the value the user sends through by reserves of the units we want as an output. Then we divide by `ethReserve` and add 1 the the whole result.
+> What are we calculating again? Oh yeah, for the amount of ETH the user is depositing, we want them to also deposit an equal amount of tokens. Let's make a reusable equation where we can swap out a value and get an output of the ETH and $BAL the user will be depositing, named `tokenDeposit` and `liquidityMinted`. 
+5. How do we calculate how many tokens the user needs to deposit? You multiply the value the user sends through by reserves of the units we want as an output. Then we divide by `ethReserve` and add 1 to the result.
 6. Now for `liquidityMinted` use the same equation but replace `tokenReserve` with `totalLiquidity`, so that we are multiplying in the numerator by the units we want.
 
 - [ ] Is `tokenDeposit` assigned the value of our equation?
@@ -400,6 +392,7 @@ Part 3: Updating, Transferring, Emitting, and Returning 🎀
 9. The user already sent deposited their ETH, but they still have to deposit their tokens. How do we require a token transfer from them?
 10. We just completed something important, which event should we emit?
 11. What should the last line of the function (look at the function signature). 
+
 
 <details markdown='1'><summary>👩🏽‍🏫 Solution Code </summary>
 
