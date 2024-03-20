@@ -80,6 +80,33 @@ yarn start
 
 Start by creating a `receive()` function in the `RiggedRoll.sol` contract to allow it to receive Eth. This will allow us to fund the RiggedRoll contract from the faucet which is required for our contract to call the rollTheDice() function.
 
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+<details markdown='1'><summary>Question One</summary>
+
+> `receive()` is a fallback function in solidity. Do we need to add the `function` keyword before it?
+
+</details>
+
+<details markdown='1'><summary>Question Two</summary>
+
+> What visibility should our `receive()` function have?
+
+</details>
+<details markdown='1'><summary>Question Three</summary>
+
+> Which keyword allows solidity functions to be paid?
+
+</details>
+
+<details markdown='1'><summary>Question Four</summary>
+
+> Do we need to add code in the function's code block? Or will it already do what it needs to do?
+
+</details>
+
+</details>
+
 Next add a `riggedRoll()` function. This function should predict the randomness of a roll, and if the outcome will be a winner, call `rollTheDice()` on the DiceGame contract.
 
 🃏 Predict the outcome by generating your random numbers in the exact same way as the DiceGame contract.
