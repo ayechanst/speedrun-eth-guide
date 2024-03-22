@@ -57,6 +57,8 @@ yarn start
 
 > 👩‍💻 Rerun `yarn deploy` whenever you want to deploy new contracts to the frontend. If you haven't made any contract changes, you can run `yarn deploy --reset` for a completely fresh deploy.
 
+> 🚨 🚨 🦈 **The Guiding Questions will lead you in the right direction. This is a challenge after all, try and use them only if you're stuck!**
+
 ---
 
 ## Checkpoint 1: 🎲 Dice Game
@@ -111,8 +113,6 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 🃏 Predict the outcome by generating your random numbers in the exact same way as the DiceGame contract.
 
-> 📣 Reminder! Calling rollTheDice() will fail unless you send a message value of at least .002 Eth! [Here is one example of how to send value with a function call.](https://ethereum.stackexchange.com/questions/6665/call-contract-and-send-value-from-solidity)
-
 <details markdown='1'><summary>🦉 Guiding Questions</summary>
 
 <details markdown='1'><summary>Question One</summary>
@@ -158,6 +158,8 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 </details>
 
 </details>
+
+> 📣 Reminder! Calling rollTheDice() will fail unless you send a message value of at least .002 Eth! [Here is one example of how to send value with a function call.](https://ethereum.stackexchange.com/questions/6665/call-contract-and-send-value-from-solidity)
 
 🚀 To deploy your RiggedRoll contract, uncomment the appropriate lines in the `01_deploy_riggedRoll.ts` file in `packages/hardhat/deploy`
 
