@@ -117,13 +117,13 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question One</summary>
 
-> We need to make sure our `RiggedRoll.sol` contract has the required amount of Eth to call `rollTheDice()` when we eventually get a favorable roll. How can we check this?
+> We need to verify our `RiggedRoll.sol` contract has enough Eth to call `rollTheDice()` when we eventually get a winning roll. How can we make sure?
 
 </details>
 
 <details markdown='1'><summary>Question Two</summary>
 
-> What three arguments are being hashed and stored into `bytes32 hash`? Those are the ones we need to reverse engineer to recreate an identical role.
+> What three arguments are being hashed and stored into `bytes32 hash`? How can we reverse engineer each of the arguments?
 
 </details>
 
@@ -141,19 +141,19 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question Five</summary>
 
-> The last argument `nonce` needs to be the same number as `DiceGame.sol`. On what variable can we use `.nonce()` to get what we want?
+> Last is `nonce`, we have a variable already of **type** `DiceGame`, what values can we retrieve from that variable? Which value do we want?
 
 </details>
 
 <details markdown='1'><summary>Question Five</summary>
 
-> Now that we have our `hash`, how do we turn it the result into an individual `roll`?
+> With our encoded `hash`, how do we turn the value into an individual `roll`?
 
 </details>
 
 <details markdown='1'><summary>Question Six</summary>
 
-> Our `riggedRoll()` function now has favorable logic, now lets make it roll! Under what conditions do we want to call `rollTheDice()`?
+> After replicating the `roll` logic, under what condition do we want to call `rollTheDice()`?
 
 </details>
 
@@ -184,6 +184,28 @@ You have beaten the game, but where is your money? Since the RiggedRoll contract
 ![RiggedRollAddress](https://github.com/scaffold-eth/se-2-challenges/assets/55535804/e9b9d164-2fb1-416a-9c5e-198d15bca0c6)
 
 📥 Create a `withdraw(address _addr, uint256 _amount)` function to allow you to send Eth from RiggedRoll to another address.
+
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+<details markdown='1'><summary>Question One</summary>
+
+> What visibility should this function have?
+
+</detials>
+
+<details markdown='1'><summary>Question Two</summary>
+
+> What modifier can we add to this function so that only the owner can call it?
+
+</detials>
+
+<details markdown='1'><summary>Question Three</summary>
+
+> Now how can we make this function send or transfer money to us? There are a few ways of doing this.
+
+</detials>
+
+</detials>
 
 ### 🥅 Goals
 
