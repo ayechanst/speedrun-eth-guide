@@ -101,7 +101,7 @@ Start by creating a `receive()` function in the `RiggedRoll.sol` contract to all
 
 <details markdown='1'><summary>Question Four</summary>
 
-> Do we need to add code in the function's code block? Or will it already do what it needs to do?
+> Do we need to add code in the function's code block? Or does it already do what it needs to do?
 
 </details>
 
@@ -112,6 +112,49 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 🃏 Predict the outcome by generating your random numbers in the exact same way as the DiceGame contract.
 
 > 📣 Reminder! Calling rollTheDice() will fail unless you send a message value of at least .002 Eth! [Here is one example of how to send value with a function call.](https://ethereum.stackexchange.com/questions/6665/call-contract-and-send-value-from-solidity)
+
+<details markdown='1'><summary>🦉 Guiding Questions</summary>
+
+<details markdown='1'><summary>Question One</summary>
+
+> We need to make sure our `RiggedRoll.sol` contract has the required amount of Eth to call `rollTheDice()` when we eventually get a favorable roll. How can we check this?
+
+</details>
+
+<details markdown='1'><summary>Question Two</summary>
+
+> What three arguments are being hashed and stored into `bytes32 hash`? Those are the ones we need to reverse engineer to recreate an identical role.
+
+</details>
+
+<details markdown='1'><summary>Question Three</summary>
+
+> Let's start with `prevHash`. Declare the variable, then think about if we need to change anything about it from `DiceGame.sol`.
+
+</details>
+
+<details markdown='1'><summary>Question Four</summary>
+
+> For the address of `DiceGame.sol`, what variable in our contract already has its address assigned to it?
+
+</details>
+
+<details markdown='1'><summary>Question Five</summary>
+
+> The last argument `nonce` needs to be the same number as `DiceGame.sol`. On what variable can we use `.nonce()` to get what we want?
+
+</details>
+
+<details markdown='1'><summary>Question Five</summary>
+
+>
+
+</details>
+<details markdown='1'><summary>Question Four</summary>
+> 
+</details>
+
+</details>
 
 🚀 To deploy your RiggedRoll contract, uncomment the appropriate lines in the `01_deploy_riggedRoll.ts` file in `packages/hardhat/deploy`
 
