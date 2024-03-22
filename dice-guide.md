@@ -191,21 +191,21 @@ You have beaten the game, but where is your money? Since the RiggedRoll contract
 
 > What visibility should this function have?
 
-</detials>
+</details>
 
 <details markdown='1'><summary>Question Two</summary>
 
 > What modifier can we add to this function so that only the owner can call it?
 
-</detials>
+</details>
 
 <details markdown='1'><summary>Question Three</summary>
 
 > Now how can we make this function send or transfer money to us? There are a few ways of doing this.
 
-</detials>
+</details>
 
-</detials>
+</details>
 
 ### 🥅 Goals
 
