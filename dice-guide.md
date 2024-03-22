@@ -147,11 +147,14 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question Five</summary>
 
->
+> Now that we have our `hash`, how do we turn it the result into an individual `roll`?
 
 </details>
-<details markdown='1'><summary>Question Four</summary>
-> 
+
+<details markdown='1'><summary>Question Six</summary>
+
+> Our `riggedRoll()` function now has favorable logic, now lets make it roll! Under what conditions do we want to call `rollTheDice()`?
+
 </details>
 
 </details>
