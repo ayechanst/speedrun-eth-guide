@@ -86,7 +86,7 @@ Start by creating a `receive()` function in the `RiggedRoll.sol` contract to all
 
 <details markdown='1'><summary>Question One</summary>
 
-> `receive()` is a fallback function in solidity. Should we need to add the `function` keyword before it?
+> `receive()` is a [fallback function](https://solidity-by-example.org/fallback/) in solidity. Should we need to add the `function` keyword before it?
 
 </details>
 
