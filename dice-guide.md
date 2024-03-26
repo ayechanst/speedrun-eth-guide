@@ -117,7 +117,7 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question One</summary>
 
-> We need to verify our `RiggedRoll.sol` contract has enough Eth to call `rollTheDice()` when we eventually get a winning roll. How can we make sure?
+> We need to verify our `RiggedRoll.sol` contract has enough Eth to call `rollTheDice()` when we eventually get a winning roll. How can we require this?
 
 </details>
 
@@ -135,23 +135,23 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question Four</summary>
 
-> For the address of `DiceGame.sol`, what variable in our contract already has the address of `DiceGame.sol` assigned to it?
+> Next is the address, what variable in our contract already has the address of `DiceGame.sol` assigned to it?
 
 </details>
 
 <details markdown='1'><summary>Question Five</summary>
 
-> Last is `nonce`, we have a variable already of **type** `DiceGame`, what values can we retrieve from that variable? Which value do we want?
-
-</details>
-
-<details markdown='1'><summary>Question Five</summary>
-
-> Now that we have our encoded `hash`, how do we convert the value into an individual `roll`?
+> Last is `nonce`, we already have a variable of **type** `DiceGame`, what values can we retrieve from that variable? Which value do we want?
 
 </details>
 
 <details markdown='1'><summary>Question Six</summary>
+
+> Now that we have our encoded `hash`, how can we convert the value into an individual `roll`?
+
+</details>
+
+<details markdown='1'><summary>Question Seven</summary>
 
 > After replicating the `roll` logic, under what condition do we want to call `rollTheDice()`?
 
