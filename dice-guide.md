@@ -86,7 +86,7 @@ Start by creating a `receive()` function in the `RiggedRoll.sol` contract to all
 
 <details markdown='1'><summary>Question One</summary>
 
-> `receive()` is a fallback function in solidity. Do we need to add the `function` keyword before it?
+> `receive()` is a fallback function in solidity. Should we need to add the `function` keyword before it?
 
 </details>
 
@@ -123,19 +123,19 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question Two</summary>
 
-> What three arguments are being hashed and stored into `bytes32 hash`? How can we reverse engineer each of the arguments?
+> What three arguments are being hashed and stored into `bytes32 hash`? How can we reverse-engineer each of the arguments?
 
 </details>
 
 <details markdown='1'><summary>Question Three</summary>
 
-> Let's start with `prevHash`. Declare the variable, then think about if we need to change anything about it from `DiceGame.sol`.
+> Let's start with `prevHash`. How can we assign it the same value it has in `DiceGame.sol`?
 
 </details>
 
 <details markdown='1'><summary>Question Four</summary>
 
-> For the address of `DiceGame.sol`, what variable in our contract already has its address assigned to it?
+> For the address of `DiceGame.sol`, what variable in our contract already has the address of `DiceGame.sol` assigned to it?
 
 </details>
 
@@ -147,7 +147,7 @@ Next add a `riggedRoll()` function. This function should predict the randomness 
 
 <details markdown='1'><summary>Question Five</summary>
 
-> With our encoded `hash`, how do we turn the value into an individual `roll`?
+> Now that we have our encoded `hash`, how do we convert the value into an individual `roll`?
 
 </details>
 
@@ -201,7 +201,7 @@ You have beaten the game, but where is your money? Since the RiggedRoll contract
 
 <details markdown='1'><summary>Question Three</summary>
 
-> Now how can we make this function send or transfer money to us? There are a few ways of doing this.
+> Now, how can we make this function send or transfer money to our front end address? There are a few ways of doing this.
 
 </details>
 
